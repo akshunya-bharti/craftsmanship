@@ -1,9 +1,20 @@
+using Craftsmanship.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var connectionString = builder.Configuration.GetConnectionString("CraftsmanshipDb");
+
+builder.Services.AddDbContext<CraftsmanshipDbContext>(options =>
+{
+    options.UseSqlite(connectionString);
+});
 
 var app = builder.Build();
 
