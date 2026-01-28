@@ -13,5 +13,6 @@ namespace Craftsmanship.Infrastructure.Persistence.Entities
         public DateTime ScanTimestamp { get; set; }
         public string RawPayload { get; set; } = default!;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsProcessed { get; set; } = false;
     }
 }
