@@ -1,3 +1,4 @@
+using Craftsmanship.Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Craftsmanship.Infrastructure.Persistence
@@ -9,7 +10,6 @@ namespace Craftsmanship.Infrastructure.Persistence
         {
         }
 
-        // Placeholder – entities will come later
-        // public DbSet<Team> Teams { get; set; }
+        public DbSet<ScanEntity> Scans => Set<ScanEntity>();
     }
 }
