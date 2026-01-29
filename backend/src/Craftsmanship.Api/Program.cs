@@ -28,6 +28,18 @@ builder.Services.AddDbContext<CraftsmanshipDbContext>(options =>
     options.UseSqlite(connectionString);
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactApp",
+        policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // --------------------
@@ -41,6 +53,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("ReactApp");
 
 // Map Controllers (CRITICAL)
 app.MapControllers();
