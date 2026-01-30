@@ -1,3 +1,5 @@
+using System.Text.Json;
+using Craftsmanship.Domain.CodeQuality;
 using Craftsmanship.Domain.Ingestion;
 using Craftsmanship.Domain.Scoring;
 
@@ -9,19 +11,79 @@ namespace Craftsmanship.Infrastructure.Scoring
 
         public ScoreResult Evaluate(string rawPayload)
         {
-            // v1: stub logic
+            var snapshot = JsonSerializer.Deserialize<QualitySnapshotWrapper>(rawPayload)!;
+            var data = JsonSerializer.Deserialize<CodeQualitySnapshot>(
+                JsonSerializer.Serialize(snapshot.Payload)
+            )!;
+
+            var smellScore = CalculateSmellScore(data);
+            var complexityScore = CalculateComplexityScore(data);
+            var duplicationScore = CalculateDuplicationScore(data);
+            var hygieneScore = CalculateHygieneScore(data);
+
+            var overall =
+                smellScore * 0.30 +
+                complexityScore * 0.25 +
+                duplicationScore * 0.20 +
+                hygieneScore * 0.25;
+
             return new ScoreResult
             {
-                OverallScore = 75,
+                OverallScore = (int)Math.Round(overall),
                 SubScores = new
                 {
-                    Smells = 70,
-                    Complexity = 80,
-                    Duplication = 75,
-                    Hygiene = 70,
-                    Trend = 80
+                    Smells = smellScore,
+                    Complexity = complexityScore,
+                    Duplication = duplicationScore,
+                    Hygiene = hygieneScore
                 }
             };
         }
+
+        private int CalculateSmellScore(CodeQualitySnapshot d)
+        {
+            var penalty =
+                d.Smells.Critical * 10 +
+                d.Smells.Major * 2 +
+                d.Smells.Minor * 0.5;
+
+            return Clamp(100 - penalty / Math.Max(d.Loc / 1000, 1));
+        }
+
+        private int CalculateComplexityScore(CodeQualitySnapshot d)
+        {
+            var penalty =
+                d.Complexity.Max > 25 ? 20 : 0 +
+                d.Complexity.FilesAboveThreshold * 3;
+
+            return Clamp(100 - penalty);
+        }
+
+        private int CalculateDuplicationScore(CodeQualitySnapshot d)
+        {
+            var penalty =
+                d.Duplication.Percentage * 2 +
+                d.Duplication.Blocks;
+
+            return Clamp(100 - penalty);
+        }
+
+        private int CalculateHygieneScore(CodeQualitySnapshot d)
+        {
+            var penalty =
+                d.Hygiene.HighSeverityIssues * 10 +
+                d.Hygiene.UnusedCode * 2 +
+                d.Hygiene.SuppressedWarnings;
+
+            return Clamp(100 - penalty);
+        }
+
+        private int Clamp(double value)
+            => (int)Math.Max(0, Math.Min(100, value));
+    }
+
+    internal class QualitySnapshotWrapper
+    {
+        public object Payload { get; set; } = default!;
     }
 }
