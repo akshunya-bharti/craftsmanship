@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Craftsmanship.Api.Models;
 using Craftsmanship.Domain.Ingestion;
 using Craftsmanship.Infrastructure.Persistence;
@@ -33,7 +34,8 @@ namespace Craftsmanship.Api.Controllers
                 TeamKey = latestScore.TeamKey,
                 Aspect = latestScore.Aspect.ToString(),
                 OverallScore = latestScore.OverallScore,
-                EvaluatedAt = latestScore.EvaluatedAt
+                EvaluatedAt = latestScore.EvaluatedAt,
+                SubScores = JsonSerializer.Deserialize<Dictionary<string, int>>(latestScore.SubScores)!
             };
         }
     }

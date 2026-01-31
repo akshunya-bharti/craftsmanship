@@ -6,6 +6,7 @@ type ScoreResponse = {
   aspect: string;
   overallScore: number;
   evaluatedAt: string;
+  subScores: Record<string, number>;
 };
 
 function App() {
@@ -39,6 +40,14 @@ function App() {
           <p>
             <strong>Overall Score:</strong> {score.overallScore}
           </p>
+          <h4>Sub Scores</h4>
+          <ul>
+            {Object.entries(score.subScores).map(([key, value]) => (
+              <li key={key}>
+                {key}: <strong>{value}</strong>
+              </li>
+            ))}
+          </ul>
           <p>
             Evaluated At:{" "}
             {new Date(score.evaluatedAt).toLocaleString()}

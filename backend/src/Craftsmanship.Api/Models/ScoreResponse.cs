@@ -8,5 +8,7 @@ namespace Craftsmanship.Api.Models
         public string Aspect { get; set; } = default!;
         public int OverallScore { get; set; }
         public DateTime EvaluatedAt { get; set; }
+
+        public Dictionary<string, int> SubScores { get; set; } = new();
     }
 }
