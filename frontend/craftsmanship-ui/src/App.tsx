@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+type Team = {
+  teamKey: string;
+  name: string;
+};
+
 type ScoreResponse = {
   teamKey: string;
   aspect: string;
@@ -10,36 +15,71 @@ type ScoreResponse = {
 };
 
 function App() {
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [selectedTeamKey, setSelectedTeamKey] = useState<string>("");
   const [score, setScore] = useState<ScoreResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string>("");
 
+   // Fetch teams on load
   useEffect(() => {
-    fetch("http://localhost:5264/api/teams/team-orders/scores/current")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch score");
+    fetch("http://localhost:5264/api/teams")
+      .then(res => res.json())
+      .then(data => setTeams(data));
+  }, []);
+
+  // Fetch score when selected team changes
+  useEffect(() => {
+    if (!selectedTeamKey) return;
+
+    setScore(null);
+    setMessage("");
+
+    fetch(`http://localhost:5264/api/teams/${selectedTeamKey}/scores/current`)
+      .then(res => {
+        if (res.status === 404) {
+          setMessage("No scans available for the team to calculate scores");
+          return null;
         }
         return res.json();
       })
-      .then((data) => setScore(data))
-      .catch((err) => setError(err.message));
-  }, []);
+      .then(data => {
+        if (data) setScore(data);
+      })
+      .catch(() =>
+        setMessage("Unable to fetch score data")
+      );
+  }, [selectedTeamKey]);
 
   return (
     <div style={{ padding: "2rem", fontFamily: "Arial" }}>
       <h1>Craftsmanship Dashboard</h1>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <label>
+        Select Team:&nbsp;
+        <select
+          value={selectedTeamKey}
+          onChange={(e) => setSelectedTeamKey(e.target.value)}
+        >
+          <option value="">-- Select a team --</option>
+          {teams.map(team => (
+            <option key={team.teamKey} value={team.teamKey}>
+              {team.name}
+            </option>
+          ))}
+        </select>
+      </label>
 
-      {!score && !error && <p>Loading score...</p>}
+      <hr />
+
+      {message && <p>{message}</p>}
 
       {score && (
         <div>
           <h2>Team: {score.teamKey}</h2>
           <p>Aspect: {score.aspect}</p>
-          <p>
-            <strong>Overall Score:</strong> {score.overallScore}
-          </p>
+
+          <h3>Overall Score: {score.overallScore}</h3>
+
           <h4>Sub Scores</h4>
           <ul>
             {Object.entries(score.subScores).map(([key, value]) => (
@@ -48,6 +88,7 @@ function App() {
               </li>
             ))}
           </ul>
+
           <p>
             Evaluated At:{" "}
             {new Date(score.evaluatedAt).toLocaleString()}
