@@ -12,5 +12,6 @@ namespace Craftsmanship.Infrastructure.Persistence
 
         public DbSet<ScanEntity> Scans => Set<ScanEntity>();
         public DbSet<ScoreSnapshotEntity> ScoreSnapshots => Set<ScoreSnapshotEntity>();
+        public DbSet<TeamEntity> Teams => Set<TeamEntity>();
     }
 }
