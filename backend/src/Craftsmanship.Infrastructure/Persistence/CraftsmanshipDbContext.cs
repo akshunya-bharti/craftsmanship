@@ -20,5 +20,17 @@ namespace Craftsmanship.Infrastructure.Persistence
                 typeof(CraftsmanshipDbContext).Assembly
             );
         }
+
+        public override int SaveChanges()
+        {
+            Database.ExecuteSqlRaw("PRAGMA foreign_keys = ON;");
+            return base.SaveChanges();
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            await Database.ExecuteSqlRawAsync("PRAGMA foreign_keys = ON;", cancellationToken);
+            return await base.SaveChangesAsync(cancellationToken);
+        }
     }
 }

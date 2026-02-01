@@ -25,7 +25,10 @@ var connectionString = builder.Configuration.GetConnectionString("CraftsmanshipD
 
 builder.Services.AddDbContext<CraftsmanshipDbContext>(options =>
 {
-    options.UseSqlite(connectionString);
+    options.UseSqlite(connectionString, sqlite =>
+    {
+        sqlite.CommandTimeout(30);
+    });
 });
 
 builder.Services.AddCors(options =>

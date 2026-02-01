@@ -3,6 +3,7 @@ using Craftsmanship.Domain.Ingestion;
 using Craftsmanship.Infrastructure.Persistence;
 using Craftsmanship.Infrastructure.Persistence.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Craftsmanship.Api.Controllers
 {
@@ -24,6 +25,12 @@ namespace Craftsmanship.Api.Controllers
                 string.IsNullOrWhiteSpace(snapshot.CommitId))
             {
                 return BadRequest("TeamKey and CommitId are required.");
+            }
+
+            var teamExists = await _dbContext.Teams.AnyAsync(t => t.TeamKey == snapshot.TeamKey);
+            if (!teamExists)
+            {
+                return BadRequest($"Team '{snapshot.TeamKey}' does not exist. Please create the team before ingestion.");
             }
 
             var scan = new ScanEntity

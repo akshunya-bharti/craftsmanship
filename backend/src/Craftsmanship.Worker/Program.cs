@@ -9,7 +9,11 @@ var connectionString = builder.Configuration.GetConnectionString("CraftsmanshipD
 
 builder.Services.AddDbContext<CraftsmanshipDbContext>(options =>
 {
-    options.UseSqlite("Data Source=../craftsmanship.db");
+    //options.UseSqlite("Data Source=../craftsmanship.db");
+    options.UseSqlite(connectionString, sqlite =>
+    {
+        sqlite.CommandTimeout(30);
+    });
 });
 
 builder.Services.AddHostedService<Worker>();
