@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Craftsmanship.Domain", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Craftsmanship.Infrastructure", "src\Craftsmanship.Infrastructure\Craftsmanship.Infrastructure.csproj", "{4161FA63-8DB5-4426-B5FC-D6FB77CE3548}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{95AD03B3-EF6B-40A5-8716-D6980EDA800B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Craftsmanship.Domain.Tests", "tests\Craftsmanship.Domain.Tests\Craftsmanship.Domain.Tests.csproj", "{5A6E9DB3-F9D6-46D7-9802-38C0746F2FAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,11 +42,16 @@ Global
 		{4161FA63-8DB5-4426-B5FC-D6FB77CE3548}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4161FA63-8DB5-4426-B5FC-D6FB77CE3548}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4161FA63-8DB5-4426-B5FC-D6FB77CE3548}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A6E9DB3-F9D6-46D7-9802-38C0746F2FAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A6E9DB3-F9D6-46D7-9802-38C0746F2FAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A6E9DB3-F9D6-46D7-9802-38C0746F2FAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A6E9DB3-F9D6-46D7-9802-38C0746F2FAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C847DFE2-AA33-4C9C-B32E-FF1001C2A92B} = {3F455A89-2FA4-4A7A-85A5-D4D1584ED07D}
 		{D2E8F832-5E1E-4994-807D-90DAC823F0EE} = {3F455A89-2FA4-4A7A-85A5-D4D1584ED07D}
 		{1E08534E-9481-43D5-836B-242718702447} = {3F455A89-2FA4-4A7A-85A5-D4D1584ED07D}
 		{4161FA63-8DB5-4426-B5FC-D6FB77CE3548} = {3F455A89-2FA4-4A7A-85A5-D4D1584ED07D}
+		{5A6E9DB3-F9D6-46D7-9802-38C0746F2FAF} = {95AD03B3-EF6B-40A5-8716-D6980EDA800B}
 	EndGlobalSection
 EndGlobal
