@@ -1,20 +1,32 @@
 using System.Text.Json;
 using Craftsmanship.Domain.CodeQuality;
 using Craftsmanship.Domain.Ingestion;
-using Craftsmanship.Domain.Scoring;
 
-namespace Craftsmanship.Infrastructure.Scoring
+namespace Craftsmanship.Domain.Scoring
 {
     public class CodeQualityScorer : IScorer
     {
+
         public QualityAspect Aspect => QualityAspect.CodeQuality;
+
+        private static readonly JsonSerializerOptions JsonOptions =
+        new()
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
 
         public ScoreResult Evaluate(string rawPayload)
         {
-            var snapshot = JsonSerializer.Deserialize<QualitySnapshotWrapper>(rawPayload)!;
+            var snapshot = JsonSerializer.Deserialize<QualitySnapshotWrapper>(
+                rawPayload,
+                JsonOptions
+            ) ?? throw new InvalidOperationException("Failed to deserialize wrapper");
+
             var data = JsonSerializer.Deserialize<CodeQualitySnapshot>(
-                JsonSerializer.Serialize(snapshot.Payload)
-            )!;
+                snapshot.Payload.GetRawText(),
+                JsonOptions
+            ) ?? throw new InvalidOperationException("Failed to deserialize code quality snapshot");
 
             var smellScore = CalculateSmellScore(data);
             var complexityScore = CalculateComplexityScore(data);
@@ -84,6 +96,6 @@ namespace Craftsmanship.Infrastructure.Scoring
 
     internal class QualitySnapshotWrapper
     {
-        public object Payload { get; set; } = default!;
+        public JsonElement Payload { get; set; } = default!;
     }
 }

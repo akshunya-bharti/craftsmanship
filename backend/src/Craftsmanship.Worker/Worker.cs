@@ -3,7 +3,6 @@ using Craftsmanship.Domain.Ingestion;
 using Craftsmanship.Domain.Scoring;
 using Craftsmanship.Infrastructure.Persistence;
 using Craftsmanship.Infrastructure.Persistence.Entities;
-using Craftsmanship.Infrastructure.Scoring;
 using Microsoft.EntityFrameworkCore;
 
 namespace Craftsmanship.Worker;
