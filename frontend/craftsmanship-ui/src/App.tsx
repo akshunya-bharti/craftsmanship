@@ -14,7 +14,8 @@ function DashboardPage() {
     { name: "Code Quality", score: 78 },
     { name: "Test Quality", score: 85 },
     { name: "Build Stability", score: 91 },
-    { name: "Architecture Health", score: 73 }
+    { name: "Architecture Health", score: 73 },
+    { name: "Engineering Discipline", score: 73 }
   ];
 
   return (
@@ -39,10 +40,40 @@ function Header() {
 }
 
 function ScoreSummary({ overallScore, level }: { overallScore: number; level: string }) {
+
+  const getColor = (score: number) => {
+    if (score >= 85) return "#22c55e";
+    if (score >= 70) return "#facc15";
+    return "#ef4444";
+  };
+
+  const getSummaryText = (score: number) => {
+    if (score >= 85) return "Strong engineering quality";
+    if (score >= 70) return "Needs improvement in some areas";
+    return "Immediate attention required";
+  };
+
   return (
     <div className="summary-card">
-      <div className="overall-score">{overallScore}</div>
-      <div className="level-badge">{level}</div>
+      <div className="summary-label">Overall Score</div>
+
+      <div className="overall-score" style={{ color: getColor(overallScore) }}>
+        {overallScore}
+      </div>
+
+      <div className="summary-subtext">
+        {level} • {getSummaryText(overallScore)}
+      </div>
+
+      <div className="progress-bar-container">
+        <div
+          className="progress-bar-fill"
+          style={{
+            width: `${overallScore}%`,
+            backgroundColor: getColor(overallScore)
+          }}
+        />
+      </div>
     </div>
   );
 }
