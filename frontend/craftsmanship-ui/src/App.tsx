@@ -1,102 +1,77 @@
-import { useEffect, useState } from "react";
 import "./App.css";
 
-type Team = {
-  teamKey: string;
+type AspectScore = {
   name: string;
+  score: number;
 };
 
-type ScoreResponse = {
-  teamKey: string;
-  aspect: string;
-  overallScore: number;
-  evaluatedAt: string;
-  subScores: Record<string, number>;
-};
+function DashboardPage() {
+  // Static mock data (Step 2 of Thinking in React)
+  const overallScore = 78;
+  const level = "Level 2";
 
-function App() {
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [selectedTeamKey, setSelectedTeamKey] = useState<string>("");
-  const [score, setScore] = useState<ScoreResponse | null>(null);
-  const [message, setMessage] = useState<string>("");
-
-   // Fetch teams on load
-  useEffect(() => {
-    fetch("http://localhost:5264/api/teams")
-      .then(res => res.json())
-      .then(data => setTeams(data));
-  }, []);
-
-  // Fetch score when selected team changes
-  useEffect(() => {
-    if (!selectedTeamKey) return;
-
-    setScore(null);
-    setMessage("");
-
-    fetch(`http://localhost:5264/api/teams/${selectedTeamKey}/scores/current`)
-      .then(res => {
-        if (res.status === 404) {
-          setMessage("No scans available for the team to calculate scores");
-          return null;
-        }
-        return res.json();
-      })
-      .then(data => {
-        if (data) setScore(data);
-      })
-      .catch(() =>
-        setMessage("Unable to fetch score data")
-      );
-  }, [selectedTeamKey]);
+  const aspects: AspectScore[] = [
+    { name: "Code Quality", score: 78 },
+    { name: "Test Quality", score: 85 },
+    { name: "Build Stability", score: 91 },
+    { name: "Architecture Health", score: 73 }
+  ];
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "Arial" }}>
-      <h1>Craftsmanship Dashboard</h1>
-
-      <label>
-        Select Team:&nbsp;
-        <select
-          value={selectedTeamKey}
-          onChange={(e) => setSelectedTeamKey(e.target.value)}
-        >
-          <option value="">-- Select a team --</option>
-          {teams.map(team => (
-            <option key={team.teamKey} value={team.teamKey}>
-              {team.name}
-            </option>
-          ))}
-        </select>
-      </label>
-
-      <hr />
-
-      {message && <p>{message}</p>}
-
-      {score && (
-        <div>
-          <h2>Team: {score.teamKey}</h2>
-          <p>Aspect: {score.aspect}</p>
-
-          <h3>Overall Score: {score.overallScore}</h3>
-
-          <h4>Sub Scores</h4>
-          <ul>
-            {Object.entries(score.subScores).map(([key, value]) => (
-              <li key={key}>
-                {key}: <strong>{value}</strong>
-              </li>
-            ))}
-          </ul>
-
-          <p>
-            Evaluated At:{" "}
-            {new Date(score.evaluatedAt).toLocaleString()}
-          </p>
-        </div>
-      )}
+    <div className="dashboard-container">
+      <Header />
+      <ScoreSummary overallScore={overallScore} level={level} />
+      <AspectGrid aspects={aspects} />
     </div>
   );
 }
 
-export default App;
+function Header() {
+  return (
+    <div className="header">
+      <div className="title">Craftsmanship Dashboard</div>
+      <select>
+        <option>Payments Team</option>
+        <option>Orders Team</option>
+      </select>
+    </div>
+  );
+}
+
+function ScoreSummary({ overallScore, level }: { overallScore: number; level: string }) {
+  return (
+    <div className="summary-card">
+      <div className="overall-score">{overallScore}</div>
+      <div className="level-badge">{level}</div>
+    </div>
+  );
+}
+
+function AspectGrid({ aspects }: { aspects: AspectScore[] }) {
+  return (
+    <div className="aspect-grid">
+      {aspects.map((aspect) => (
+        <AspectCard key={aspect.name} name={aspect.name} score={aspect.score} />
+      ))}
+    </div>
+  );
+}
+
+function AspectCard({ name, score }: { name: string; score: number }) {
+  const getColor = (score: number) => {
+    if (score >= 85) return "#22c55e";
+    if (score >= 70) return "#facc15";
+    return "#ef4444";
+  };
+
+  return (
+    <div className="aspect-card">
+      <div className="aspect-title">{name}</div>
+      <div className="aspect-score" style={{ color: getColor(score) }}>
+        {score}
+      </div>
+    </div>
+  );
+}
+
+export default DashboardPage;

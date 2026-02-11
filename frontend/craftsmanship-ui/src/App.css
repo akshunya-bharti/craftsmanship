@@ -1,42 +1,78 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body {
+  margin: 0;
+  background-color: #0f172a;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #e2e8f0;
+  display: flex;
+  justify-content: center;   /* horizontal center */
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.dashboard-container {
+  width: 100%;
+  max-width: 1000px;
+  padding: 60px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  /* centers children horizontally */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 40px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.title {
+  font-size: 28px;
+  font-weight: 600;
 }
 
-.card {
-  padding: 2em;
+.summary-card {
+  background-color: #1e293b;
+  padding: 32px;
+  border-radius: 12px;
+  margin: 0 auto 40px auto; /* this centers it */
+  border: 1px solid #334155;
+  max-width: 600px; /* control width */
 }
 
-.read-the-docs {
-  color: #888;
+.overall-score {
+  font-size: 56px;
+  font-weight: bold;
+}
+
+.level-badge {
+  margin-top: 8px;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  background-color: #334155;
+}
+
+.aspect-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.aspect-card {
+  background-color: #1e293b;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #334155;
+}
+
+.aspect-title {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #94a3b8;
+}
+
+.aspect-score {
+  font-size: 32px;
+  font-weight: bold;
 }
