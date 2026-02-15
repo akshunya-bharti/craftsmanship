@@ -53,7 +53,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-  width: 100%;
+  width: 90%;
   color: #9d0179;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -61,13 +61,11 @@ body {
 }
 
 .team-name {
-  border: 1px solid #9d0179;
   font-size: 40px;
 }
 
 .evaluated-changeset {
   font-size: 24px;
-  text-decoration: underline;
 }
 
 .summary-label {

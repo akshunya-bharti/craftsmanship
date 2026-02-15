@@ -23,7 +23,8 @@ function DashboardPage() {
   return (
     <div className="dashboard-container">
       <Header />
-      <ScoreSummary overallScore={overallScore} level={level} teamName={teamName} evaluatedChangeset={evaluatedChangeset} />
+      <TeamDetails teamName={teamName} evaluatedChangeset={evaluatedChangeset}/>
+      <ScoreSummary overallScore={overallScore} level={level}  />
       <AspectGrid aspects={aspects} />
     </div>
   );
@@ -41,7 +42,16 @@ function Header() {
   );
 }
 
-function ScoreSummary({ overallScore, level, teamName, evaluatedChangeset }: { overallScore: number; level: string; teamName: string; evaluatedChangeset: number }) {
+function TeamDetails({teamName, evaluatedChangeset}:{teamName: string; evaluatedChangeset: number}) {
+  return (
+    <div className="team-details">
+        <div className="team-name">{ teamName }</div>
+        <div className="evaluated-changeset">CS: { evaluatedChangeset }</div>
+    </div>
+  )
+}
+
+function ScoreSummary({ overallScore, level }: { overallScore: number; level: string; }) {
 
   const getColor = (score: number) => {
     if (score >= 85) return "#22c55e";
@@ -57,12 +67,6 @@ function ScoreSummary({ overallScore, level, teamName, evaluatedChangeset }: { o
 
   return (
     <div className="summary-card">
-
-      <div className="team-details">
-        <div className="team-name">{ teamName }</div>
-        <div className="evaluated-changeset">CS: { evaluatedChangeset }</div>
-      </div>
-
       <div className="summary-label">Overall Score</div>
 
       <div className="overall-score" style={{ color: getColor(overallScore) }}>
