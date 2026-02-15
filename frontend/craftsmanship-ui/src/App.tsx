@@ -9,6 +9,8 @@ function DashboardPage() {
   // Static mock data (Step 2 of Thinking in React)
   const overallScore = 78;
   const level = "Level 2";
+  const teamName = "Payments Team";
+  const evaluatedChangeset = 1145256;
 
   const aspects: AspectScore[] = [
     { name: "Code Quality", score: 78 },
@@ -21,7 +23,7 @@ function DashboardPage() {
   return (
     <div className="dashboard-container">
       <Header />
-      <ScoreSummary overallScore={overallScore} level={level} />
+      <ScoreSummary overallScore={overallScore} level={level} teamName={teamName} evaluatedChangeset={evaluatedChangeset} />
       <AspectGrid aspects={aspects} />
     </div>
   );
@@ -39,7 +41,7 @@ function Header() {
   );
 }
 
-function ScoreSummary({ overallScore, level }: { overallScore: number; level: string }) {
+function ScoreSummary({ overallScore, level, teamName, evaluatedChangeset }: { overallScore: number; level: string; teamName: string; evaluatedChangeset: number }) {
 
   const getColor = (score: number) => {
     if (score >= 85) return "#22c55e";
@@ -55,6 +57,12 @@ function ScoreSummary({ overallScore, level }: { overallScore: number; level: st
 
   return (
     <div className="summary-card">
+
+      <div className="team-details">
+        <div className="team-name">{ teamName }</div>
+        <div className="evaluated-changeset">CS: { evaluatedChangeset }</div>
+      </div>
+
       <div className="summary-label">Overall Score</div>
 
       <div className="overall-score" style={{ color: getColor(overallScore) }}>

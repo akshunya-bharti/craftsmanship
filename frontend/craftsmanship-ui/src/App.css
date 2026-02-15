@@ -48,8 +48,30 @@ body {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
+.team-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  color: #9d0179;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.team-name {
+  border: 1px solid #9d0179;
+  font-size: 40px;
+}
+
+.evaluated-changeset {
+  font-size: 24px;
+  text-decoration: underline;
+}
+
 .summary-label {
-  font-size: 32px;
+  font-size: 28px;
   color: #94a3b8;
   letter-spacing: 1px;
   text-transform: uppercase;
